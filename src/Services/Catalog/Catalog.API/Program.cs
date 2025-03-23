@@ -9,6 +9,7 @@ builder.Services.AddMarten(opts =>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
     // Default is AutoCreate.CreateOrUpdate
+    // It will create or update automatically when first api call
     //opts.AutoCreateSchemaObjects = AutoCreate.All;
 }).UseLightweightSessions();
 
