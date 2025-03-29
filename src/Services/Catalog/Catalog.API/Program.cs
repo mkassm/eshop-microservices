@@ -1,9 +1,14 @@
+using BuildingBlocks.Exceptions.Handler;
+
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
+
 builder.Services.AddCarter();
 builder.Services.AddMarten(opts =>
 {
@@ -12,8 +17,9 @@ builder.Services.AddMarten(opts =>
     // It will create or update automatically when first api call
     //opts.AutoCreateSchemaObjects = AutoCreate.All;
 }).UseLightweightSessions();
-builder.Services.AddValidatorsFromAssembly(assembly);
 
+builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
