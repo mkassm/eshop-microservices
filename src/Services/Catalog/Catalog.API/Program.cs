@@ -12,6 +12,8 @@ builder.Services.AddMarten(opts =>
     // It will create or update automatically when first api call
     //opts.AutoCreateSchemaObjects = AutoCreate.All;
 }).UseLightweightSessions();
+builder.Services.AddValidatorsFromAssembly(assembly);
+
 
 var app = builder.Build();
 
