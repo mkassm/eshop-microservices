@@ -1,4 +1,6 @@
 using BuildingBlocks.Exceptions.Handler;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -18,6 +20,9 @@ builder.Services.AddMarten(opts =>
     //opts.AutoCreateSchemaObjects = AutoCreate.All;
 }).UseLightweightSessions();
 
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
@@ -29,5 +34,11 @@ var app = builder.Build();
 app.MapCarter();
 
 app.UseExceptionHandler(options => { });
+
+app.UseHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 app.Run();
