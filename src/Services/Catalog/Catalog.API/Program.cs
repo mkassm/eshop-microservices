@@ -20,6 +20,8 @@ builder.Services.AddMarten(opts =>
     //opts.AutoCreateSchemaObjects = AutoCreate.All;
 }).UseLightweightSessions();
 
+// .AddHealthChecks() is the current app health check
+// .AddNpgSql() is the health check for the database connection of postgresql
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
