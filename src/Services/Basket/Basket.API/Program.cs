@@ -18,8 +18,10 @@ builder.Services.AddMarten(opts =>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
     // Default is AutoCreate.CreateOrUpdate
-    // It will create or update automatically when first api call
+    // It will create or update automatically when first api call which is useful for development
     //opts.AutoCreateSchemaObjects = AutoCreate.All;
+    opts.Schema.For<ShoppingCart>().Identity(x => x.UserName); // override the default identity
+    //    .Index(x => x.UserName); // add index for the UserName property
 }).UseLightweightSessions();
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
