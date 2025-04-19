@@ -10,16 +10,19 @@ public class ValidationBehavior<TRequest, TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (validator is not null)
+        {
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
-        var failures =
-            validationResult
-            .Errors
-            .ToList();
+            var failures =
+                validationResult
+                    .Errors
+                    .ToList();
 
-        if (failures.Any())
-            throw new ValidationException(failures);
-
+            if (failures.Any())
+                throw new ValidationException(failures);
+        }
+        
         return await next();
     }
 }
