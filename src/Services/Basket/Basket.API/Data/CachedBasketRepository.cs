@@ -3,6 +3,8 @@ using System.Text.Json;
 
 namespace Basket.API.Data;
 
+// CachedBasketRepository act as a proxy patter for IBasketRepository
+// It will first check the cache for the basket, if not found it will call the repository
 public class CachedBasketRepository
     (IBasketRepository repository, IDistributedCache cache) 
     : IBasketRepository

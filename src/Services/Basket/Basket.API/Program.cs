@@ -26,6 +26,13 @@ builder.Services.AddMarten(opts =>
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
+// This is equal to
+//builder.Services.AddScoped<IBasketRepository>(sp =>
+//{
+//    var repository = sp.GetRequiredService<IBasketRepository>();
+//    var cache = sp.GetRequiredService<IDistributedCache>();
+//    return new CachedBasketRepository(repository, cache);
+//});
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -38,6 +45,7 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+builder.Services.AddValidatorsFromAssembly(assembly);
 
 var app = builder.Build();
 
