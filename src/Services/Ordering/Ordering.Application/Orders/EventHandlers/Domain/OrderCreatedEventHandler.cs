@@ -12,6 +12,7 @@ public class OrderCreatedEventHandler
 
         if (await featureManager.IsEnabledAsync("OrderFullfilment"))
         {
+            // ToDo: add consumers to handle order fullfilment process
             var orderCreatedIntegrationEvent = domainEvent.order.ToOrderDto();
             await publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
         }
