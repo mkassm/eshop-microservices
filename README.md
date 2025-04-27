@@ -57,3 +57,7 @@ We have implemented below **features over the run-aspnetcore-microservices repos
 * Containerization of microservices
 * Containerization of databases
 * Override Environment variables
+
+### Solution Structure
+![image](https://github.com/user-attachments/assets/1007872f-e9c2-4470-a3bf-593fe0078d94)
+
